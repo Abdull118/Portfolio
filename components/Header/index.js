@@ -106,7 +106,7 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
             {data.showBlog && (
               <Button onClick={() => router.push("/blog")}>Blog</Button>
             )}
-            <Button onClick={() => window.open("mailto:hello@chetanverma.com")}>
+            <Button onClick={() => window.open("mailto:ahmadevelops@gmail.com")}>
               Contact
             </Button>
             {mounted && theme && (
@@ -126,7 +126,7 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
             {data.showBlog && (
               <Button onClick={() => router.push("/blog")}>Blog</Button>
             )}
-            <Button onClick={() => window.open("mailto:hello@chetanverma.com")}>
+            <Button onClick={() => window.open("mailto:ahmadevelops@gmail.com")}>
               Contact
             </Button>
             {mounted && theme && (
