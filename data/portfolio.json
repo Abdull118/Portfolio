@@ -18,7 +18,7 @@
       "link": "https://twitter.com/ahmadevelops"
     },
     { "id": "4", "title": "Email", "link": "mailto:ahmadevelops@gmail.com" },
-    { "id": "5", "title": "Phone", "link": "tel:+13474001820" }
+    { "id": "5", "title": "Phone", "link": "smsto:+13474001820" }
   ],
   "projects": [
     {
