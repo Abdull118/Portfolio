@@ -4,6 +4,7 @@ import Button from "../Button";
 import yourData from "../../data/portfolio.json";
 
 const Socials = ({ className }) => {
+  console.log('Socials data:', yourData.socials);
   return (
     <div className={`${className} flex flex-wrap mob:flex-nowrap`}>
       {yourData.socials.map((social, index) => (
