@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState, useCallback } from "react";
 import Header from "../components/Header";
 import ServiceCard from "../components/ServiceCard";
 import Socials from "../components/Socials";
@@ -6,9 +6,10 @@ import WorkCard from "../components/WorkCard";
 import { useIsomorphicLayoutEffect } from "../utils";
 import { stagger } from "../animations";
 import Footer from "../components/Footer";
-import Head from "next/head";
 import Button from "../components/Button";
 import Link from "next/link";
+import ZoomView from "../components/ZoomView";
+import SEO, { SITE_URL } from "../components/SEO";
 
 // Local Data
 import data from "../data/portfolio.json";
@@ -21,6 +22,58 @@ export default function Home() {
   const textTwo = useRef();
   const textThree = useRef();
   const textFour = useRef();
+
+  const [openWindows, setOpenWindows] = useState([]);
+  const [nextWindowId, setNextWindowId] = useState(1);
+
+  const openProject = useCallback((project, rect) => {
+    const windowId = nextWindowId;
+    const newWindow = {
+      id: windowId,
+      project: project,
+      cardRect: rect,
+      isOpen: true,
+      isMinimized: false,
+      isFullscreen: false,
+      windowSize: { width: 1200, height: 800 },
+      windowPosition: { 
+        x: Math.random() * (window.innerWidth - 1200) * 0.3, 
+        y: Math.random() * (window.innerHeight - 800) * 0.3 
+      },
+      zIndex: 100 + openWindows.length
+    };
+    
+    setOpenWindows(prev => [...prev, newWindow]);
+    setNextWindowId(prev => prev + 1);
+  }, [nextWindowId, openWindows.length]);
+
+  const closeProject = useCallback((windowId) => {
+    setOpenWindows(prev => prev.filter(window => window.id !== windowId));
+  }, []);
+
+  const updateWindow = useCallback((windowId, updates) => {
+    setOpenWindows(prev => prev.map(window => 
+      window.id === windowId ? { ...window, ...updates } : window
+    ));
+  }, []);
+
+  const bringToFront = useCallback((windowId) => {
+    setOpenWindows(prev => {
+      const maxZIndex = Math.max(...prev.map(w => w.zIndex), 100);
+      return prev.map(window => 
+        window.id === windowId 
+          ? { ...window, zIndex: maxZIndex + 1 }
+          : window
+      );
+    });
+  }, []);
+
+  // Calculate minimized window positions
+  const getMinimizedPosition = useCallback((windowId) => {
+    const minimizedWindows = openWindows.filter(w => w.isMinimized && w.isOpen);
+    const currentIndex = minimizedWindows.findIndex(w => w.id === windowId);
+    return currentIndex;
+  }, [openWindows]);
 
   // Handling Scroll
   const handleWorkScroll = () => {
@@ -49,9 +102,29 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>{data.name}</title>
-      </Head>
+      <SEO
+        title="Portfolio"
+        description={`${data.name} is a full-stack software engineer based in New York building high-performing web apps.`}
+        image={data?.projects?.[0]?.imageSrc}
+        canonical={`${SITE_URL}/`}
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "Person",
+          "name": data.name,
+          "jobTitle": "Full Stack Software Engineer",
+          "description": data.aboutpara,
+          "url": SITE_URL,
+          "sameAs": data.socials?.map((social) => social.link),
+          "knowsAbout": [
+            "Web Development",
+            "Full Stack Engineering",
+            "JavaScript",
+            "React",
+            "Next.js",
+            "Tailwind CSS",
+          ],
+        }}
+      />
       {/* This button should not go into production */}
       {process.env.NODE_ENV === "development" && (
         <div className="fixed bottom-5 right-5">
@@ -105,7 +178,7 @@ export default function Home() {
                 img={project.imageSrc}
                 name={project.title}
                 description={project.description}
-                onClick={() => window.open(project.url)}
+                onClick={(rect) => openProject(project, rect)}
               />
             ))}
           </div>
@@ -130,6 +203,25 @@ export default function Home() {
         </div>
         <Footer />
       </div>
+
+      {openWindows.map((window) => (
+        <ZoomView
+          key={window.id}
+          windowId={window.id}
+          project={window.project}
+          isOpen={window.isOpen}
+          isMinimized={window.isMinimized}
+          isFullscreen={window.isFullscreen}
+          cardRect={window.cardRect}
+          windowSize={window.windowSize}
+          windowPosition={window.windowPosition}
+          zIndex={window.zIndex}
+          minimizedIndex={getMinimizedPosition(window.id)}
+          onClose={() => closeProject(window.id)}
+          onUpdate={(updates) => updateWindow(window.id, updates)}
+          onBringToFront={() => bringToFront(window.id)}
+        />
+      ))}
     </>
   );
 }

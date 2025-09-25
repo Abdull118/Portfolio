@@ -28,11 +28,13 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
               </h1>
               <div className="flex items-center">
                 <Button
+                  aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
                   onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                 >
                   <img
                     className="h-6"
                     src={`/images/${theme === "dark" ? "moon.svg" : "sun.svg"}`}
+                    alt="Toggle theme"
                   ></img>
                 </Button>
                 <Popover.Button>
@@ -88,11 +90,7 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
           </>
         )}
       </Popover>
-      <div
-        className={`mt-10 hidden flex-row items-center justify-between sticky ${
-          theme === "light" && "bg-white"
-        } dark:text-white top-0 z-10 tablet:flex`}
-      >
+      <div className="mt-10 hidden flex-row items-center justify-between sticky top-0 z-10 tablet:flex bg-transparent dark:text-white">
         <h1
           onClick={() => router.push("/")}
           className="font-medium cursor-pointer mob:p-2 laptop:p-0"
@@ -111,11 +109,13 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
             </Button>
             {mounted && theme && (
               <Button
+                aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
               >
                 <img
                   className="h-6"
                   src={`/images/${theme === "dark" ? "moon.svg" : "sun.svg"}`}
+                  alt="Toggle theme"
                 ></img>
               </Button>
             )}
@@ -131,11 +131,13 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
             </Button>
             {mounted && theme && (
               <Button
+                aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
               >
                 <img
                   className="h-6"
                   src={`/images/${theme === "dark" ? "moon.svg" : "sun.svg"}`}
+                  alt="Toggle theme"
                 ></img>
               </Button>
             )}

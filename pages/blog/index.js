@@ -3,10 +3,11 @@ import { getAllPosts } from "../../utils/api";
 import { ISOToDate } from "../../utils";
 import Header from "../../components/Header";
 import Router, { useRouter } from "next/router";
-import Head from "next/head";
 import { useIsomorphicLayoutEffect } from "../../utils";
 import { stagger } from "../../animations";
 import Button from "../../components/Button";
+import SEO, { SITE_URL } from "../../components/SEO";
+import portfolioData from "../../data/portfolio.json";
 
 const Blog = ({ posts }) => {
   const text = useRef();
@@ -56,9 +57,12 @@ const Blog = ({ posts }) => {
 
   return (
     <>
-      <Head>
-        <title>Blog</title>
-      </Head>
+      <SEO
+        title="Blog"
+        description={`Insights on engineering, product, and web development from ${portfolioData.name}.`}
+        canonical={`${SITE_URL}/blog`}
+        type="blog"
+      />
       <div className="container mx-auto mb-10">
         <Header isBlog={true}></Header>
         <div className="mt-10">

@@ -3,12 +3,12 @@ import { getPostBySlug, getAllPosts } from "../../utils/api";
 import Header from "../../components/Header";
 import ContentSection from "../../components/ContentSection";
 import Footer from "../../components/Footer";
-import Head from "next/head";
 import { useIsomorphicLayoutEffect } from "../../utils";
 import { stagger } from "../../animations";
 import Button from "../../components/Button";
 import BlogEditor from "../../components/BlogEditor";
 import { useRouter } from "next/router";
+import SEO, { SITE_URL } from "../../components/SEO";
 
 const BlogPost = ({ post }) => {
   const [showEditor, setShowEditor] = useState(false);
@@ -22,10 +22,26 @@ const BlogPost = ({ post }) => {
 
   return (
     <>
-      <Head>
-        <title>{"Blog - " + post.title}</title>
-        <meta name="description" content={post.preview} />
-      </Head>
+      <SEO
+        title={post.title}
+        description={post.preview}
+        image={post.image}
+        canonical={`${SITE_URL}/blog/${post.slug}`}
+        type="article"
+        datePublished={post.date}
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          "headline": post.title,
+          "image": post.image,
+          "datePublished": post.date,
+          "description": post.preview,
+          "author": {
+            "@type": "Person",
+            "name": post.author || "Ahmad",
+          },
+        }}
+      />
       <div className="container mx-auto mt-10">
         <Header isBlog={true} />
         <div className="mt-10 flex flex-col">
@@ -75,7 +91,7 @@ export async function getStaticProps({ params }) {
     "preview",
     "title",
     "tagline",
-    "preview",
+    "author",
     "image",
     "content",
   ]);
