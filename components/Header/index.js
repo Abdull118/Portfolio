@@ -15,8 +15,8 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
     setMounted(true);
   }, []);
   return (
-    <>
-      <Popover className="block tablet:hidden mt-5">
+    <div className="relative isolate">
+      <Popover className="relative block tablet:hidden mt-5 z-10">
         {({ open }) => (
           <>
             <div className="flex items-center justify-between p-2 laptop:p-0">
@@ -24,7 +24,7 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
                 onClick={() => router.push("/")}
                 className="font-medium cursor-pointer p-2 laptop:p-0"
               >
-                {data.name}.
+                {data.name}
               </h1>
               <div className="flex items-center">
                 <Button
@@ -144,7 +144,7 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

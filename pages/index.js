@@ -27,6 +27,11 @@ export default function Home() {
   const [nextWindowId, setNextWindowId] = useState(1);
 
   const openProject = useCallback((project, rect) => {
+    if (typeof window !== "undefined" && window.innerWidth < 600 && project?.url) {
+      window.open(project.url, "_blank", "noopener,noreferrer");
+      return;
+    }
+
     const windowId = nextWindowId;
     const newWindow = {
       id: windowId,
@@ -36,13 +41,13 @@ export default function Home() {
       isMinimized: false,
       isFullscreen: false,
       windowSize: { width: 1200, height: 800 },
-      windowPosition: { 
-        x: Math.random() * (window.innerWidth - 1200) * 0.3, 
-        y: Math.random() * (window.innerHeight - 800) * 0.3 
+      windowPosition: {
+        x: Math.random() * (window.innerWidth - 1200) * 0.3,
+        y: Math.random() * (window.innerHeight - 800) * 0.3
       },
       zIndex: 100 + openWindows.length
     };
-    
+
     setOpenWindows(prev => [...prev, newWindow]);
     setNextWindowId(prev => prev + 1);
   }, [nextWindowId, openWindows.length]);
