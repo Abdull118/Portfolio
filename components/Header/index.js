@@ -15,8 +15,8 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
     setMounted(true);
   }, []);
   return (
-    <div className="relative isolate">
-      <Popover className="relative block tablet:hidden mt-5 z-10">
+    <div className="relative">
+      <Popover className="relative block tablet:hidden mt-5 z-[9999]">
         {({ open }) => (
           <>
             <div className="flex items-center justify-between p-2 laptop:p-0">
@@ -33,7 +33,7 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
                 >
                   <img
                     className="h-6"
-                    src={`/images/${theme === "dark" ? "moon.svg" : "sun.svg"}`}
+                    src={`/images/${mounted && theme === "light" ? "sun.svg" : "moon.svg"}`}
                     alt="Toggle theme"
                   ></img>
                 </Button>
@@ -42,10 +42,10 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
                     className="h-5"
                     src={`/images/${
                       !open
-                        ? theme === "dark"
-                          ? "menu-white.svg"
-                          : "menu.svg"
-                        : theme === "light"
+                        ? mounted && theme === "light"
+                          ? "menu.svg"
+                          : "menu-white.svg"
+                        : mounted && theme === "light"
                         ? "cancel.svg"
                         : "cancel-white.svg"
                     }`}
@@ -54,7 +54,7 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
               </div>
             </div>
             <Popover.Panel
-              className={`absolute right-0 z-10 w-11/12 p-4 ${
+              className={`absolute right-0 z-[9999] w-11/12 p-4 ${
                 theme === "dark" ? "bg-slate-800" : "bg-white"
               } shadow-md rounded-md`}
             >
