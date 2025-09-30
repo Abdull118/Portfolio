@@ -14,6 +14,19 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
   useEffect(() => {
     setMounted(true);
   }, []);
+  const isHome = router.pathname === "/";
+
+  const goToSection = (hash) => {
+    if (typeof window === "undefined") return;
+    if (isHome) {
+      const el = document.querySelector(hash);
+      if (el) {
+        window.scrollTo({ top: el.offsetTop, left: 0, behavior: "smooth" });
+        return;
+      }
+    }
+    router.push(`/${hash}`);
+  };
   return (
     <div className="relative">
       <Popover className="relative block tablet:hidden mt-5 z-[9999]">
@@ -60,27 +73,37 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
             >
               {!isBlog ? (
                 <div className="grid grid-cols-1">
-                  <Button onClick={handleWorkScroll}>Work</Button>
-                  <Button onClick={handleAboutScroll}>About</Button>
+                  {!isHome && (
+                    <Button onClick={() => router.push("/")}>Home</Button>
+                  )}
+                  <Button onClick={() => goToSection("#portfolio")}>Portfolio</Button>
+                  <Button onClick={() => router.push("/about")}>About</Button>
+                  <Button onClick={() => goToSection("#services")}>Services</Button>
+                  <Button onClick={() => goToSection("#pricing")}>Pricing</Button>
+                  <Button onClick={() => goToSection("#testimonials")}>Testimonials</Button>
                   {data.showBlog && (
                     <Button onClick={() => router.push("/blog")}>Blog</Button>
                   )}
+              <Button type="primary" onClick={() => router.push("/get-started")}>Get Started</Button>
                   <Button
-                    onClick={() => window.open("mailto:ahmadevelops@gmail.com")}
+                    onClick={() => router.push("/get-started")}
                   >
                     Contact
                   </Button>
                 </div>
               ) : (
                 <div className="grid grid-cols-1">
-                  <Button onClick={() => router.push("/")} classes="first:ml-1">
-                    Home
-                  </Button>
+                  <Button onClick={() => router.push("/")} classes="first:ml-1">Home</Button>
+                  <Button onClick={() => goToSection("#portfolio")}>Portfolio</Button>
+                  <Button onClick={() => router.push("/about")}>About</Button>
+                  <Button onClick={() => goToSection("#services")}>Services</Button>
+                  <Button onClick={() => goToSection("#pricing")}>Pricing</Button>
+                  <Button onClick={() => goToSection("#testimonials")}>Testimonials</Button>
                   {data.showBlog && (
                     <Button onClick={() => router.push("/blog")}>Blog</Button>
                   )}
                   <Button
-                    onClick={() => window.open("mailto:ahmadevelops@gmail.com")}
+                    onClick={() => router.push("/get-started")}
                   >
                     Contact
                   </Button>
@@ -99,12 +122,17 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
         </h1>
         {!isBlog ? (
           <div className="flex">
-            <Button onClick={handleWorkScroll}>Work</Button>
-            <Button onClick={handleAboutScroll}>About</Button>
+            {!isHome && (<Button onClick={() => router.push("/")}>Home</Button>)}
+            <Button onClick={() => goToSection("#portfolio")}>Portfolio</Button>
+            <Button onClick={() => router.push("/about")}>About</Button>
+            <Button onClick={() => goToSection("#services")}>Services</Button>
+            <Button onClick={() => goToSection("#pricing")}>Pricing</Button>
+            <Button onClick={() => goToSection("#testimonials")}>Testimonials</Button>
             {data.showBlog && (
               <Button onClick={() => router.push("/blog")}>Blog</Button>
             )}
-            <Button onClick={() => window.open("mailto:ahmadevelops@gmail.com")}>
+            <Button type="primary" onClick={() => router.push("/get-started")}>Get Started</Button>
+            <Button onClick={() => router.push("/get-started")}>
               Contact
             </Button>
             {mounted && theme && (
@@ -123,10 +151,15 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
         ) : (
           <div className="flex">
             <Button onClick={() => router.push("/")}>Home</Button>
+            <Button onClick={() => goToSection("#portfolio")}>Portfolio</Button>
+            <Button onClick={() => router.push("/about")}>About</Button>
+            <Button onClick={() => goToSection("#services")}>Services</Button>
+            <Button onClick={() => goToSection("#pricing")}>Pricing</Button>
+            <Button onClick={() => goToSection("#testimonials")}>Testimonials</Button>
             {data.showBlog && (
               <Button onClick={() => router.push("/blog")}>Blog</Button>
             )}
-            <Button onClick={() => window.open("mailto:ahmadevelops@gmail.com")}>
+            <Button onClick={() => router.push("/get-started")}>
               Contact
             </Button>
             {mounted && theme && (

@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import { ThemeProvider } from "next-themes";
 import BackgroundFX from "../components/BackgroundFX";
 import Head from "next/head";
+import Footer from "../components/Footer";
 
 const App = ({ Component, pageProps }) => {
   return (
@@ -32,6 +33,7 @@ const App = ({ Component, pageProps }) => {
       </Head>
       <BackgroundFX />
       <Component {...pageProps} />
+      <Footer />
     </ThemeProvider>
   );
 };

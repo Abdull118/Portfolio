@@ -12,3 +12,93 @@ body{
   @apply bg-white text-black dark:bg-black dark:text-white
 }
 
+/* Liquid Glass Effect - Optimized for 120Hz */
+.liquid-glass {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: inherit;
+  transform: translateY(100%);
+  animation: liquid-wave-fast 2s ease-in-out infinite;
+  opacity: 0.8;
+  will-change: transform;
+}
+
+.liquid-glass::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: inherit;
+  transform: translateY(100%);
+  animation: liquid-wave-fast 1.6s ease-in-out infinite reverse;
+  opacity: 0.6;
+  will-change: transform;
+}
+
+.service-card:hover .liquid-glass {
+  opacity: 1;
+  transform: translateY(0%);
+}
+
+.service-card:hover .liquid-glass::before {
+  transform: translateY(-8%);
+  animation: liquid-wave-fast 2s ease-in-out infinite 0.6s;
+}
+
+.service-card:hover .liquid-glass::after {
+  transform: translateY(-15%);
+  animation: liquid-wave-fast 1.6s ease-in-out infinite 0.8s;
+}
+
+@keyframes liquid-wave-fast {
+  0%, 100% {
+    transform: translateY(0%) scaleY(1);
+  }
+  25% {
+    transform: translateY(-2%) scaleY(1.02);
+  }
+  50% {
+    transform: translateY(-1%) scaleY(0.98);
+  }
+  75% {
+    transform: translateY(-3%) scaleY(1.01);
+  }
+}
+
+/* Hardware accelerated liquid fill */
+@keyframes liquid-fill-fast {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+.service-card:hover .liquid-glass {
+  animation: liquid-fill-fast 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.service-card:hover .liquid-glass::before {
+  animation: liquid-fill-fast 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards, liquid-wave-fast 2s ease-in-out infinite 0.6s;
+}
+
+.service-card:hover .liquid-glass::after {
+  animation: liquid-fill-fast 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards, liquid-wave-fast 1.6s ease-in-out infinite 0.8s;
+}
+
